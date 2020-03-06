@@ -10,7 +10,7 @@ services:
             - "8080:80"
         environment: 
             - DRUPAL_PROFILE:standard
-            - DRUPAL_SITE_NAME:Teste do Drupal
+            - DRUPAL_SITE_NAME:TestedoDrupal
             - DRUPAL_USER:admin
             - DRUPAL_PASS:admin
             - DRUPAL_DBURL:mysql://drupal:drupal@database:3306/drupal
@@ -37,13 +37,13 @@ services:
 
 secrets:
     mysql_user: 
-        file: ./mysql_user.txt
+        file: mysql_user.txt
     mysql_password: 
-        file: ./mysql_password.txt
+        file: mysql_password.txt
     mysql_database: 
-        file: ./mysql_database.txt
+        file: mysql_database.txt
     mysql_root_password: 
-        file: ./mysql_root_password.txt
+        file: mysql_root_password.txt
 
 volumes: 
     drupal:
