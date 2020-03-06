@@ -1,0 +1,56 @@
+version: '3.3'
+
+services: 
+
+    drupal:
+        image: custom-drupal
+        build: 
+            context: .
+        ports:
+            - "8080:80"
+        environment: 
+            - DRUPAL_PROFILE:standard
+            - DRUPAL_SITE_NAME:Teste do Drupal
+            - DRUPAL_USER:admin
+            - DRUPAL_PASS:admin
+            - DRUPAL_DBURL:mysql://drupal:drupal@database:3306/drupal
+        volumes:
+            - drupal:/var/www/drupal7/web/sites/default/
+        configs:
+            - composer_path
+            - composer_lock_path
+            
+    mysql:
+        image: mysql
+        secrets:
+            - mysql_user
+            - mysql_password
+            - mysql_database
+            - mysql_root_password
+        environment: 
+            MYSQL_USER_FILE: /run/secrets/mysql_user
+            MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+            MYSQL_DATABASE_FILE: /run/secrets/mysql_database
+            MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+        volumes: 
+            - drupal-data:/var/lib/mysql
+
+secrets:
+    mysql_user: 
+        file: ./mysql_user.txt
+    mysql_password: 
+        file: ./mysql_password.txt
+    mysql_database: 
+        file: ./mysql_database.txt
+    mysql_root_password: 
+        file: ./mysql_root_password.txt
+
+volumes: 
+    drupal:
+    drupal-data:
+
+configs:
+    composer_path:
+        file: ./composer.json:/var/www/drupal7/composer.json
+    composer_lock_path:
+        file: ./composer.lock:/var/www/drupal7/composer.lock
